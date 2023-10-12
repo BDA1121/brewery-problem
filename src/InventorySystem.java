@@ -30,8 +30,17 @@ public class InventorySystem {
     private int itemCount;
 
     public InventorySystem() {
-        this.items = new InventoryItem[10];  // assuming we won't have more than 10 ingredients for simplicity
+        this.items = new InventoryItem[10];
         this.itemCount = 0;
+    }
+
+    public void subtractIngredient(String name, int quantity) {
+        for (int i = 0; i < itemCount; i++) {
+            if (items[i].getIngredient().getName().equals(name)) {
+                items[i].subtractQuantity(quantity);
+                return;
+            }
+        }
     }
 
     public void addIngredient(Ingredient ingredient, int quantity) {
@@ -46,5 +55,14 @@ public class InventorySystem {
 
     public InventoryItem[] getAllItems() {
         return items;
+    }
+
+    public int getQuantity(String name){
+        for (int i = 0; i < itemCount; i++) {
+            if (items[i].getIngredient().getName().equals(name)) {
+                return items[i].getQuantity();
+            }
+        }
+        return 0;
     }
 }

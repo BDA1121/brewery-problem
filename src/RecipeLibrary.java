@@ -9,7 +9,7 @@ public class RecipeLibrary {
     }
 
     public void addRecipe(Recipe recipe) {
-        if(currentRecipeCount < MAX_RECIPES) {
+        if (currentRecipeCount < MAX_RECIPES) {
             recipes[currentRecipeCount++] = recipe;
         } else {
             System.out.println("Recipe library is full!");
@@ -23,5 +23,10 @@ public class RecipeLibrary {
             }
         }
         return null;
+    }
+    public Recipe[] getAllRecipes() {
+        Recipe[] allRecipes = new Recipe[currentRecipeCount];
+        System.arraycopy(recipes, 0, allRecipes, 0, currentRecipeCount);
+        return allRecipes;
     }
 }

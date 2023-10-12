@@ -2,13 +2,11 @@ public class ProductionSystem {
 
     private Batch currentBatch;
 
+
     private boolean isContainerDirty;
 
+    private InventorySystem inventory;
 
-
-    // A nested class to represent a batch.
-
-    // You can expand this class to have more attributes, such as expiration date, production date, etc.
 
     private static class Batch {
 
@@ -46,10 +44,10 @@ public class ProductionSystem {
 
 
 
-    public ProductionSystem() {
+    public ProductionSystem(InventorySystem inventory) {
 
         currentBatch = null;
-
+        this.inventory = inventory;
         isContainerDirty = false;
 
     }
@@ -57,38 +55,36 @@ public class ProductionSystem {
 
 
     public void createBatch(Recipe recipe, int size) {
-
         if (isContainerDirty) {
-
             System.out.println("The container is dirty. Please clean it before creating a new batch.");
-
             return;
-
         }
 
+        // Check if ingredients are available in the inventory
+        Ingredient[] ingredientsRequired = recipe.getIngredients();
+        for (int i = 0; i < recipe.getContents(); i++) {
+            Ingredient requiredIngredient = ingredientsRequired[i];
+            int requiredQuantity = (int) (requiredIngredient.getQuantity() * size);
+            int availableQuantity = inventory.getQuantity(requiredIngredient.getName());
 
+            if (requiredQuantity > availableQuantity) {
+                System.out.println("Insufficient quantity of " + requiredIngredient.getName() + " in inventory.");
+                return;
+            }
+        }
 
-        // Check if ingredients are available. For this example, I'm skipping this check.
-
-        // In a real scenario, you'll need to interact with the InventorySystem to ensure
-
-        // you have enough of each ingredient for the recipe.
-
-
+        // Deduct ingredients from the inventory
+        for (int i = 0; i < recipe.getContents(); i++) {
+            Ingredient requiredIngredient = ingredientsRequired[i];
+            int requiredQuantity = (int) (requiredIngredient.getQuantity() * size);
+            inventory.subtractIngredient(requiredIngredient.getName(), requiredQuantity);
+        }
 
         currentBatch = new Batch(recipe, size);
-
         System.out.println("New batch of " + size + " servings for recipe " + recipe.getName() + " has been created.");
-
-
-
-        // Reduce the ingredients from the inventory after creating a batch.
-
-        // You'd typically do this by iterating over the ingredients in the recipe and
-
-        // deducting them from the InventorySystem.
-
+        isContainerDirty = true;
     }
+
 
 
 
@@ -114,8 +110,11 @@ public class ProductionSystem {
 
     public void cleanContainer() {
 
+        if (currentBatch != null) {
+            System.out.println("Cannot clean the container until the batch is bottled.");
+            return;
+        }
         isContainerDirty = false;
-
         System.out.println("Container has been cleaned.");
 
     }

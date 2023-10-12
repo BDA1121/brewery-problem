@@ -1,37 +1,25 @@
 public class Recipe {
-    private final int MAX_INGREDIENTS = 10; // Assuming a max of 10 ingredients per recipe for simplicity
+    private final int MAX_INGREDIENTS = 10;
+    private int contents;
     private Ingredient[] ingredients;
     private String name;
-    private int currentIngredientCount;
-    private int numberOfBottles;
 
-    public Recipe(String name) {
+    public Recipe(String name,Ingredient[] ingredients,int n) {
         this.name = name;
-        this.ingredients = new Ingredient[MAX_INGREDIENTS];
-        this.currentIngredientCount = 0;
+        this.ingredients = ingredients;
+        this.contents = n;
     }
 
     public String getName() {
         return name;
     }
 
-    public void addIngredient(Ingredient ingredient) {
-        if(currentIngredientCount < MAX_INGREDIENTS) {
-            ingredients[currentIngredientCount++] = ingredient;
-        } else {
-            System.out.println("Recipe ingredient list is full!");
-        }
-    }
-
     public Ingredient[] getIngredients() {
         return ingredients;
     }
 
-    public void setNumberOfBottles(int number) {
-        this.numberOfBottles = number;
+    public int getContents() {
+        return contents;
     }
 
-    public int getNumberOfBottles() {
-        return numberOfBottles;
-    }
 }
