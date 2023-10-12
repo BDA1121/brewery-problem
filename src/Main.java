@@ -14,7 +14,7 @@ public class Main {
             System.out.println("------------------------------------------");
             System.out.println("------------------------------------------");
             System.out.println("Brewery Control System Menu:");
-            System.out.println("1. Add Ingredient to Inventory");
+            System.out.println("1. Add Ingredient to the Inventory");
             System.out.println("2. View All Ingredients in Inventory");
             System.out.println("3. Add a Recipe");
             System.out.println("4. View All Recipes");
